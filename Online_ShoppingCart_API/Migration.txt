@@ -1,0 +1,4 @@
+// After clone the proect run this commands to update the database
+
+Update-Database -context StoreContext
+Update-Database -context AuthContext

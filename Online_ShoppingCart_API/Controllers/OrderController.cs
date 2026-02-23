@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using Online_ShoppingCart_API.IServices;
-using Online_ShoppingCart_API.Models;
+using Shopping.Application;
+using Shopping.DataAccess.Models;
 using System.Security.Claims;
 using Order = Online_ShoppingCart_API.Models.Order;
 

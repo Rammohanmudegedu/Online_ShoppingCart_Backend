@@ -1,45 +1,35 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
-
-namespace Online_ShoppingCart_API.Models
+namespace Shopping.DataAccess.Models
 {
-    //This service used to store Product information
     public class Product
     {
-   
-       
-
         [Key]
-        public int ProductId { get; set; }     //  unique product id 
+        public int ProductId { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Product Name is Required")]
         [RegularExpression(@"^[a-zA-Z0-9\s]+$", ErrorMessage = "Enter alphanumeric characters only")]
-        public string Product_Name { get; set; }   // product name
+        public string Product_Name { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Description is Required")]
-        public string Description { get; set; }   // Description for product
-      
+        public string Description { get; set; }
+
         [Required(ErrorMessage = "Price is Required")]
         [Range(1.00, double.MaxValue, ErrorMessage = "Price must be a non-negative value.")]
-        public decimal UnitPrice { get; set; }    // price for product
+        public decimal UnitPrice { get; set; }
 
-       
-        public Byte[]? Product_Image { get; set; }   // to store product image into bytes
+        public byte[]? Product_Image { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Category is Required")]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Enter Characters only")]
-        public string Category { get; set;}    // category
+        public string Category { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Brand is Required")]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Enter Characters only")]
-        public string Brand_Name { get; set; }   // brandname of product
+        public string Brand_Name { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Quantity is Required")]
         [Range(0, int.MaxValue, ErrorMessage = "Quantity must be a non-negative value.")]
-        public int QuantityInStock { get; set; }   // stock quantity
-
-        
+        public int QuantityInStock { get; set; }
     }
 }

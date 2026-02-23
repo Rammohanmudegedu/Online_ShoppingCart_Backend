@@ -2,10 +2,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Online_ShoppingCart_API.IServices;
-using Online_ShoppingCart_API.Models;
-using Online_ShoppingCart_API.Repository;
-using Online_ShoppingCart_API.Service;
+using Shopping.Application;
+using Shopping.DataAccess.Models;
+using Shopping.DataAccess.Repository;
 using System.Text;
 
 

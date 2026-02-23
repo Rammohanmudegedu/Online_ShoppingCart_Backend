@@ -1,14 +1,13 @@
 ﻿using MailChimp.Net.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Online_ShoppingCart_API.Models;
+using Shopping.DataAccess.Models;
 using Newtonsoft.Json;
 using System;
 using System.Text.Json;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 using Microsoft.EntityFrameworkCore;
-using Order = Online_ShoppingCart_API.Models.Order;
-using Online_ShoppingCart_API.IServices;
+using Shopping.Application;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Online_ShoppingCart_API.Controllers

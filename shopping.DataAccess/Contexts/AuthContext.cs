@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Online_ShoppingCart_API.Models
+namespace Shopping.DataAccess.Models
 {
     public class AuthContext : IdentityDbContext
     {
         public AuthContext(DbContextOptions<AuthContext> options) : base(options)
-        { 
+        {
         }
-
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,20 +28,19 @@ namespace Online_ShoppingCart_API.Models
                     NormalizedName = "User".ToUpper()
                 },
                 new IdentityRole
-                { 
+                {
                     Id = AdminRoleId,
                     ConcurrencyStamp = AdminRoleId,
                     Name = "Admin",
                     NormalizedName = "Admin".ToUpper()
                 },
-                new IdentityRole 
-                { 
+                new IdentityRole
+                {
                     Id = SupplierRoleId,
                     ConcurrencyStamp = SupplierRoleId,
                     Name = "Supplier",
                     NormalizedName = "Supplier".ToUpper()
                 }
-
             };
 
             builder.Entity<IdentityRole>().HasData(roles);

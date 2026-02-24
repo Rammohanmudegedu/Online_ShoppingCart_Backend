@@ -4,9 +4,9 @@ namespace shopping.application.Iservices
 {
     public interface ICartService
     {
-        (bool Success, string Message) AddToCart(OrderItem cartItem);
-        List<OrderItem> GetCart();
-        List<OrderItem> GetUserCart(string email);
-        (bool Success, string Message) DeleteCartItem(string email, int productId);
+        Task<(bool Success, string Message)> AddToCartAsync(OrderItem cartItem);
+        Task<List<OrderItem>> GetCartAsync();
+        Task<List<OrderItem>> GetUserCartAsync(string email);
+        Task<(bool Success, string Message)> DeleteCartItemAsync(string email, int productId);
     }
 }

@@ -22,7 +22,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [HttpPost]
-        [Route("gettoken")]
+        [Route("token")]
         public async Task<IActionResult> Authenticate(LoginModel login)
         {
             try

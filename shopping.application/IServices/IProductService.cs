@@ -4,7 +4,7 @@ namespace shopping.application.Iservices
 {
     public interface IProductService
     {
-        Product GetProductById(int productId);
-        void UpdateProduct(Product product);
+        Task<Product?> GetProductByIdAsync(int productId);
+        Task UpdateProductAsync(Product product);
     }
 }

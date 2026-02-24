@@ -19,9 +19,9 @@ namespace Online_ShoppingCart_API.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPost]
-        public IActionResult PlaceOrder(Order order)
+        public async Task<IActionResult> PlaceOrder(Order order)
         {
-            var (success, message) = _orderService.PlaceOrder(order);
+            var (success, message) = await _orderService.PlaceOrderAsync(order);
             if (success) return Ok(message);
             return BadRequest(message);
         }

@@ -4,7 +4,7 @@ namespace shopping.application.Iservices
 {
     public interface IOrderService
     {
-        (bool Success, string Message) PlaceOrder(Order order);
+        Task<(bool Success, string Message)> PlaceOrderAsync(Order order);
         Task<List<Order>> GetOrdersAsync();
         Task<Order?> GetOrderByIdAsync(int orderId);
         Task<List<Order>> GetOrdersByEmailAsync(string email);

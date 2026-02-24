@@ -18,33 +18,33 @@ namespace Online_ShoppingCart_API.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPost]
-        public IActionResult AddToCart([FromBody] OrderItem cartItem)
+        public async Task<IActionResult> AddToCart([FromBody] OrderItem cartItem)
         {
-            var (success, message) = _cartService.AddToCart(cartItem);
+            var (success, message) = await _cartService.AddToCartAsync(cartItem);
             if (success) return Ok(message);
             return BadRequest(message);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult GetCart()
+        public async Task<IActionResult> GetCart()
         {
-            var cart = _cartService.GetCart();
+            var cart = await _cartService.GetCartAsync();
             return Ok(cart);
         }
         [Authorize(Roles = "User,Admin")]
         [HttpGet("{email}")]
-        public IActionResult GetUserCart(string email)
+        public async Task<IActionResult> GetUserCart(string email)
         {
-            var userCartItems = _cartService.GetUserCart(email);
+            var userCartItems = await _cartService.GetUserCartAsync(email);
             return Ok(userCartItems);
         }
 
         [Authorize(Roles = "User")]
         [HttpDelete("{email}/{productId}")]
-        public IActionResult DeleteCartItem(string email, int productId)
+        public async Task<IActionResult> DeleteCartItem(string email, int productId)
         {
-            var (success, message) = _cartService.DeleteCartItem(email, productId);
+            var (success, message) = await _cartService.DeleteCartItemAsync(email, productId);
             if (success) return Ok(message);
             return NotFound(message);
         }

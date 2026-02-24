@@ -13,7 +13,7 @@ namespace Shopping.DataAccess.Models
         public int OrderId { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Street is Required")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "ZipCode is Required")]
         [RegularExpression(@"^\d{6}$", ErrorMessage = "Enter valid ZipCode")]

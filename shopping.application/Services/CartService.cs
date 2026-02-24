@@ -52,13 +52,13 @@ namespace Online_ShoppingCart_API.Service
             session.Set("Cart", bytes);
         }
 
-        public (bool Success, string Message) AddToCart(OrderItem cartItem)
+        public async Task<(bool Success, string Message)> AddToCartAsync(OrderItem cartItem)
         {
             try
             {
                 var cart = ReadCart();
 
-                var product = _productRepository.GetById(cartItem.ProductId);
+                var product = await _productRepository.GetByIdAsync(cartItem.ProductId);
 
                 if (product == null)
                     return (false, "Product not found");
@@ -92,47 +92,47 @@ namespace Online_ShoppingCart_API.Service
             }
         }
 
-        public List<OrderItem> GetCart()
+        public Task<List<OrderItem>> GetCartAsync()
         {
             try
             {
-                return ReadCart();
+                return Task.FromResult(ReadCart());
             }
             catch
             {
-                return new List<OrderItem>();
+                return Task.FromResult(new List<OrderItem>());
             }
         }
 
-        public List<OrderItem> GetUserCart(string email)
+        public Task<List<OrderItem>> GetUserCartAsync(string email)
         {
             try
             {
                 var cart = ReadCart();
-                return cart.Where(i => i.Email == email).ToList();
+                return Task.FromResult(cart.Where(i => i.Email == email).ToList());
             }
             catch
             {
-                return new List<OrderItem>();
+                return Task.FromResult(new List<OrderItem>());
             }
         }
 
-        public (bool Success, string Message) DeleteCartItem(string email, int productId)
+        public Task<(bool Success, string Message)> DeleteCartItemAsync(string email, int productId)
         {
             try
             {
                 var cart = ReadCart();
                 var itemToRemove = cart.FirstOrDefault(item => item.ProductId == productId && item.Email == email);
                 if (itemToRemove == null)
-                    return (false, "Item not found in cart");
+                    return Task.FromResult((false, "Item not found in cart"));
 
                 cart.Remove(itemToRemove);
                 SaveCart(cart);
-                return (true, "Item removed from the cart");
+                return Task.FromResult((true, "Item removed from the cart"));
             }
             catch (Exception ex)
             {
-                return (false, ex.Message);
+                return Task.FromResult((false, ex.Message));
             }
         }
     }

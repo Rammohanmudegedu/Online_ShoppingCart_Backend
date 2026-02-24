@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using shopping.DataAccess.IRepositories;
 using Shopping.DataAccess.Models;
 
@@ -13,15 +14,15 @@ namespace shopping.DataAccess.Repositories
             _storeContext = storeContext;
         }
 
-        public Product GetById(int productId)
+        public async Task<Product?> GetByIdAsync(int productId)
         {
-            return _storeContext.Products.FirstOrDefault(p => p.ProductId == productId);
+            return await _storeContext.Products.FirstOrDefaultAsync(p => p.ProductId == productId);
         }
 
-        public void Update(Product product)
+        public async Task UpdateAsync(Product product)
         {
             _storeContext.Products.Update(product);
-            _storeContext.SaveChanges();
+            await _storeContext.SaveChangesAsync();
         }
     }
 }

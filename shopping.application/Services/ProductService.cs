@@ -1,32 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using shopping.application.Iservices;
 using Shopping.DataAccess.Models;
+using shopping.DataAccess.IRepositories;
 
 namespace Online_ShoppingCart_API.Service
 {
     public class ProductService : IProductService
     {
-        private readonly StoreContext _storecontext;
+        private readonly IProductRepository _productRepository;
 
-
-        public ProductService(StoreContext storeContext)
+        public ProductService(IProductRepository productRepository)
         {
-            _storecontext = storeContext;
-
+            _productRepository = productRepository;
         }
 
-        public Product GetProductById(int productId)
+        public async Task<Product?> GetProductByIdAsync(int productId)
         {
-            return _storecontext.Products.FirstOrDefault(p => p.ProductId == productId);
+            return await _productRepository.GetByIdAsync(productId);
         }
 
-
-        public void UpdateProduct(Product product)
+        public async Task UpdateProductAsync(Product product)
         {
-            _storecontext.Products.Update(product);
-            _storecontext.SaveChanges();
-
+            await _productRepository.UpdateAsync(product);
         }
     }
 
-    }
+}

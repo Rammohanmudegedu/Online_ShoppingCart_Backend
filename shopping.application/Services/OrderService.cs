@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using shopping.application.Iservices;
 using shopping.DataAccess.IRepositories;
@@ -17,7 +18,7 @@ namespace Online_ShoppingCart_API.Service
             _productRepository = productRepository;
         }
 
-        public (bool Success, string Message) PlaceOrder(Order order)
+        public async Task<(bool Success, string Message)> PlaceOrderAsync(Order order)
         {
             try
             {
@@ -26,7 +27,7 @@ namespace Online_ShoppingCart_API.Service
 
                 foreach (var item in orders)
                 {
-                    var product = _productRepository.GetById(item.ProductId);
+                    var product = await _productRepository.GetByIdAsync(item.ProductId);
                     if (product == null)
                         return (false, "Product not found");
 
@@ -34,7 +35,7 @@ namespace Online_ShoppingCart_API.Service
                         return (false, $"{product.Product_Name} is not in stock.");
 
                     product.QuantityInStock -= item.Quantity;
-                    _productRepository.Update(product);
+                    await _productRepository.UpdateAsync(product);
                 }
 
                 var newOrder = new Order
@@ -49,7 +50,7 @@ namespace Online_ShoppingCart_API.Service
                 };
 
                 _orderRepository.Add(newOrder);
-                _orderRepository.SaveChangesAsync().GetAwaiter().GetResult();
+                await _orderRepository.SaveChangesAsync();
 
                 return (true, "Order placed successfully");
             }
@@ -86,11 +87,11 @@ namespace Online_ShoppingCart_API.Service
                 {
                     foreach (var orderItem in order.OrderItems)
                     {
-                        var product = _productRepository.GetById(orderItem.ProductId);
+                        var product = await _productRepository.GetByIdAsync(orderItem.ProductId);
                         if (product != null)
                         {
                             product.QuantityInStock += orderItem.Quantity;
-                            _productRepository.Update(product);
+                            await _productRepository.UpdateAsync(product);
                         }
                     }
 

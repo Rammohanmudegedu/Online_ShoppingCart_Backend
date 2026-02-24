@@ -4,7 +4,7 @@ namespace shopping.DataAccess.IRepositories
 {
     public interface IProductRepository
     {
-        Product GetById(int productId);
-        void Update(Product product);
+        Task<Product?> GetByIdAsync(int productId);
+        Task UpdateAsync(Product product);
     }
 }

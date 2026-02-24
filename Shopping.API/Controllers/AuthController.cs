@@ -5,7 +5,7 @@ using Shopping.DataAccess.Models;
 
 namespace Online_ShoppingCart_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/auth")]
     [ApiController]
     public class AuthController : Controller
     {
@@ -22,7 +22,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [HttpPost]
-        [Route("authenticate")]
+        [Route("gettoken")]
         public async Task<IActionResult> Authenticate(LoginModel login)
         {
             try

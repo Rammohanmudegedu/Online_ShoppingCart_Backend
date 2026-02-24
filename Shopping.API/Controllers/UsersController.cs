@@ -7,7 +7,7 @@ using Shopping.DataAccess.Models;
 
 namespace Online_ShoppingCart_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
         
         [Authorize(Roles = "Admin")]
-        [HttpGet("getAllUsers")]
+        [HttpGet]
         public async Task<ActionResult> GetAllUsers()
         {
             try
@@ -44,7 +44,7 @@ namespace Online_ShoppingCart_API.Controllers
 
 
         [Authorize(Roles = "User,Admin")]
-        [HttpGet("getUser/{email}")]
+        [HttpGet("{email}")]
         public async Task<IActionResult> GetUser(string email)
         {
             try
@@ -69,7 +69,7 @@ namespace Online_ShoppingCart_API.Controllers
 
 
         [AllowAnonymous]
-        [HttpPost("addUser")]
+        [HttpPost]
         public async Task<ActionResult> addUser(User user)
         {
             try
@@ -123,7 +123,7 @@ namespace Online_ShoppingCart_API.Controllers
 
 
         [Authorize(Roles = "User,Admin")]
-        [HttpPut("updateUser/{email}")]
+        [HttpPut("{email}")]
         public async Task<IActionResult> UpdateUser(User user, string email)
         {
             try
@@ -181,7 +181,7 @@ namespace Online_ShoppingCart_API.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("deleteUser/{email}")]
+        [HttpDelete("{email}")]
         public async Task<IActionResult> DeleteUser(string email)
         {
             try

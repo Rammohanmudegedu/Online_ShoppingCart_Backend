@@ -5,7 +5,7 @@ using shopping.application.Iservices;
 
 namespace Online_ShoppingCart_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/cart")]
     [ApiController]
     public class CartController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "User")]
-        [HttpPost("AddToCart")]
+        [HttpPost]
         public IActionResult AddToCart([FromBody] OrderItem cartItem)
         {
             var (success, message) = _cartService.AddToCart(cartItem);
@@ -26,14 +26,14 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetCart")]
+        [HttpGet]
         public IActionResult GetCart()
         {
             var cart = _cartService.GetCart();
             return Ok(cart);
         }
         [Authorize(Roles = "User,Admin")]
-        [HttpGet("GetUserCart/{email}")]
+        [HttpGet("{email}")]
         public IActionResult GetUserCart(string email)
         {
             var userCartItems = _cartService.GetUserCart(email);
@@ -41,7 +41,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "User")]
-        [HttpDelete("DeleteCartItem/{email}/{productId}")]
+        [HttpDelete("{email}/{productId}")]
         public IActionResult DeleteCartItem(string email, int productId)
         {
             var (success, message) = _cartService.DeleteCartItem(email, productId);

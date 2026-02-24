@@ -5,7 +5,7 @@ using shopping.application.Iservices;
 
 namespace Online_ShoppingCart_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/order")]
     [ApiController]
 
     public class OrderController : ControllerBase
@@ -18,7 +18,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "User")]
-        [HttpPost("PlaceOrder")]
+        [HttpPost]
         public IActionResult PlaceOrder(Order order)
         {
             var (success, message) = _orderService.PlaceOrder(order);
@@ -27,7 +27,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetOrders")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             try
@@ -42,7 +42,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "User,Admin")]
-        [HttpGet("GetOrderById/{orderId}")]
+        [HttpGet("{orderId}")]
         public async Task<ActionResult<Order>> GetOrderById(int orderId)
         {
             try
@@ -58,7 +58,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "User,Admin")]
-        [HttpGet("GetOrdersByEmail/{email}")]
+        [HttpGet("{email}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByEmail(string email)
         {
             try
@@ -75,7 +75,7 @@ namespace Online_ShoppingCart_API.Controllers
 
 
         [Authorize(Roles = "User")]
-        [HttpDelete("cancelOrderById/{orderId}")]
+        [HttpDelete("{orderId}")]
         public async Task<ActionResult> CancelOrderById(int orderId)
         {
             var (success, message) = await _orderService.CancelOrderByIdAsync(orderId);

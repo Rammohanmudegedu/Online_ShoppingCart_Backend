@@ -6,7 +6,7 @@ using Shopping.DataAccess.Models;
 
 namespace Online_ShoppingCart_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/products")]
     [ApiController]
     
     public class ProductsController : ControllerBase
@@ -22,7 +22,7 @@ namespace Online_ShoppingCart_API.Controllers
 
 
         [Authorize(Roles = "User,Admin,Supplier")]
-        [HttpGet("GetProducts")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             try
@@ -42,7 +42,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "User,Admin,Supplier")]
-        [HttpGet("Getproduct/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Product>> Getproduct(int id)
         {
             try
@@ -66,7 +66,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
     
-        [HttpGet("GetProductImage/{productId}")]
+        [HttpGet("getproductimage/{productId}")]
         public async Task<IActionResult> GetProductImage(int productId)
         {
             try
@@ -90,7 +90,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "Admin,Supplier")]
-        [HttpPost("AddProduct")]
+        [HttpPost]
         public async Task<ActionResult> AddProduct([FromForm] Product product, IFormFile ProductImage)
         {
             
@@ -126,7 +126,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "Admin,Supplier")]
-        [HttpPut("UpdateProduct/{productId}")]
+        [HttpPut("{productId}")]
         public async Task<ActionResult> UpdateProduct(int productId, [FromForm] Product newProductData, IFormFile ProductImage)
         {
             try
@@ -168,7 +168,7 @@ namespace Online_ShoppingCart_API.Controllers
 
 
         [Authorize(Roles = "Admin,Supplier")]
-        [HttpDelete("deleteProduct/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> deleteProduct(int Id)
         {
             try

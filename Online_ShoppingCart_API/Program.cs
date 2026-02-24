@@ -2,9 +2,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Shopping.Application;
+using Online_ShoppingCart_API.Auth;
+using Online_ShoppingCart_API.Extensions;
+using Online_ShoppingCart_API.Handlers;
+using Online_ShoppingCart_API.Service;
+using shopping.application.Iservices;
+using shopping.DataAccess.IRepositories;
+using shopping.DataAccess.Repositories;
 using Shopping.DataAccess.Models;
-using Shopping.DataAccess.Repository;
 using System.Text;
 
 
@@ -23,8 +28,14 @@ builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(
 builder.Services.AddDbContext<AuthContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("ShoppingCartAuthDB")));
 
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IJWTManagerRepository, JWTManagerRepository>();
+// Register Global Exception Handler
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+// Dependency Injection for Services and Repositories
+builder.Services.AddAllServices();
+builder.Services.AddAllRepositories();
+
 
 builder.Services.AddDistributedMemoryCache();
 

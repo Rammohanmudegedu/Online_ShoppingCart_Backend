@@ -1,34 +1,21 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Online_ShoppingCart_API.Models;
-using Online_ShoppingCart_API.Repository;
-using System.Net.WebSockets;
+using shopping.DataAccess.IRepositories;
+using Shopping.DataAccess.Models;
 
 namespace Online_ShoppingCart_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
-        
-
-        private readonly IJWTManagerRepository _jWTManager;
-
         private readonly UserManager<IdentityUser> _userManager;
 
-     
-
-
-        public UsersController(IJWTManagerRepository jWTManager, UserManager<IdentityUser> userManager)
+        public UsersController(UserManager<IdentityUser> userManager)
         {
-
-            _jWTManager = jWTManager;
             _userManager = userManager;
-         
         }
         
         [Authorize(Roles = "Admin")]
@@ -218,48 +205,6 @@ namespace Online_ShoppingCart_API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-
-
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("authenticate")]
-        public async Task<IActionResult> Authenticate(LoginModel login)
-        {
-            try
-            {
-                var user = await _userManager.FindByEmailAsync(login.Email);
-
-                if (user != null)
-                {
-                    var checkPassword = await _userManager.CheckPasswordAsync(user, login.Password);
-
-                    if (checkPassword)
-                    {
-                        var roles = await _userManager.GetRolesAsync(user);
-                        if (roles != null)
-                        {
-                            var jwtToken = _jWTManager.CreateJWTToken(user, roles.ToList());
-
-                            var response = new Tokens
-                            {
-                                Token = jwtToken,
-                                Roles = roles.ToList()
-                               
-                        };
-
-                            return Ok(response);
-
-                        }
-                    } 
-                }
-                return BadRequest("Email or Password Incorrect.");
-            }
-            catch (Exception ex) { 
-                return BadRequest(ex.Message);
-            }
-            
         }
     }
 }

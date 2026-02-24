@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Online_ShoppingCart_API.Models;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.AspNetCore.Authorization;
-using System.Buffers.Text;
+using Shopping.DataAccess.Models;
 
 
 namespace Online_ShoppingCart_API.Controllers
@@ -12,7 +9,7 @@ namespace Online_ShoppingCart_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     
-    public class ProductsController : Controller
+    public class ProductsController : ControllerBase
     {
         private readonly StoreContext _storecontext;
 
@@ -66,9 +63,6 @@ namespace Online_ShoppingCart_API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
-
-
         }
 
     
@@ -94,9 +88,6 @@ namespace Online_ShoppingCart_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-
 
         [Authorize(Roles = "Admin,Supplier")]
         [HttpPost("AddProduct")]
@@ -197,12 +188,5 @@ namespace Online_ShoppingCart_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-       
-
-        
-
-
     }
 }

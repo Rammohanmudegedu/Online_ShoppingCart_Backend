@@ -1,6 +1,6 @@
 using Shopping.DataAccess.Models;
 
-namespace Shopping.Application
+namespace shopping.application.Iservices
 {
     public interface IProductService
     {

@@ -1,173 +1,53 @@
-﻿using MailChimp.Net.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shopping.DataAccess.Models;
-using Newtonsoft.Json;
-using System;
-using System.Text.Json;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
-using Microsoft.EntityFrameworkCore;
-using Shopping.Application;
 using Microsoft.AspNetCore.Authorization;
+using shopping.application.Iservices;
 
 namespace Online_ShoppingCart_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
     public class CartController : ControllerBase
     {
-        private readonly StoreContext _storecontext;
+        private readonly ICartService _cartService;
 
-
-        public CartController(StoreContext storeContext)
+        public CartController(ICartService cartService)
         {
-            _storecontext = storeContext;
-
+            _cartService = cartService;
         }
-
 
         [Authorize(Roles = "User")]
         [HttpPost("AddToCart")]
-        public IActionResult AddToCart([FromBody] OrderItem cartItem, [FromServices] IHttpContextAccessor httpContextAccessor, [FromServices] IProductService productService)
+        public IActionResult AddToCart([FromBody] OrderItem cartItem)
         {
-            try
-            {
-                var session = httpContextAccessor.HttpContext.Session;
-
-             
-                var cartJson = session.GetString("Cart");
-                var cart = string.IsNullOrEmpty(cartJson) ? new List<OrderItem>() : JsonConvert.DeserializeObject<List<OrderItem>>(cartJson);
-
-            
-                var product = productService.GetProductById(cartItem.ProductId);
-
-                if (product != null)
-                {
-
-                    if (product.QuantityInStock < cartItem.Quantity)
-                    {
-                        return BadRequest("Insufficient quantity in stock.");
-                    }
-
-                    if (cartItem.Quantity <= 0)
-                    {
-                        cartItem.Quantity = 1;
-                    }
-
-                    var existingItem = cart.FirstOrDefault(item => item.ProductId == cartItem.ProductId && item.Email == cartItem.Email);
-
-                    if (existingItem != null)
-                    {
-                        
-                        existingItem.Quantity += cartItem.Quantity;
-                    }
-
-                    else
-                    {
-                        
-                        cartItem.UnitPrice = product.UnitPrice;
-                        cartItem.Product_Image = product.Product_Image;
-                        cartItem.Product_Name = product.Product_Name;
-
-                        cart.Add(cartItem);
-                    }
-
-                    
-                    session.SetString("Cart", JsonConvert.SerializeObject(cart));
-
-                    return Ok("Item added to cart");
-                }
-                else
-                {
-                    return BadRequest("Product not found");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var (success, message) = _cartService.AddToCart(cartItem);
+            if (success) return Ok(message);
+            return BadRequest(message);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpGet("GetCart")]
-        public IActionResult GetCart([FromServices] IHttpContextAccessor httpContextAccessor)
+        public IActionResult GetCart()
         {
-            try
-            {
-                var session = httpContextAccessor.HttpContext.Session;
-                var cartJson = session?.GetString("Cart");
-                var cart = string.IsNullOrEmpty(cartJson) ? new List<OrderItem>() : JsonConvert.DeserializeObject<List<OrderItem>>(cartJson);
-
-
-                return Ok(cart);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var cart = _cartService.GetCart();
+            return Ok(cart);
         }
         [Authorize(Roles = "User,Admin")]
         [HttpGet("GetUserCart/{email}")]
-        public IActionResult GetUserCart(string email, [FromServices] IHttpContextAccessor httpContextAccessor)
+        public IActionResult GetUserCart(string email)
         {
-            try
-            {
-                var session = httpContextAccessor.HttpContext.Session;
-                var cartJson = session.GetString("Cart");
-
-                var cart = string.IsNullOrEmpty(cartJson) ? new List<OrderItem>() : JsonConvert.DeserializeObject<List<OrderItem>>(cartJson);
-
-                var userCartItems = cart.Where(item => item.Email == email).ToList();
-
-                return Ok(userCartItems);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
+            var userCartItems = _cartService.GetUserCart(email);
+            return Ok(userCartItems);
         }
 
         [Authorize(Roles = "User")]
         [HttpDelete("DeleteCartItem/{email}/{productId}")]
-        public IActionResult DeleteCartItem(string email, int productId, [FromServices] IHttpContextAccessor httpContextAccessor)
+        public IActionResult DeleteCartItem(string email, int productId)
         {
-            try
-            {
-                var session = httpContextAccessor.HttpContext.Session;
-                var cartJson = session.GetString("Cart");
-
-                if (string.IsNullOrEmpty(cartJson))
-                {
-                    return NotFound("Cart is empty");
-                }
-
-                var cart = JsonConvert.DeserializeObject<List<OrderItem>>(cartJson);
-
-                
-                var itemToRemove = cart.FirstOrDefault(item => item.ProductId == productId && item.Email == email);
-
-               
-
-                
-                cart.Remove(itemToRemove);
-
-                
-                session.SetString("Cart", JsonConvert.SerializeObject(cart));
-
-                return Ok("Item removed from the cart");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var (success, message) = _cartService.DeleteCartItem(email, productId);
+            if (success) return Ok(message);
+            return NotFound(message);
         }
 
-
-
-
     }
-
-
 }

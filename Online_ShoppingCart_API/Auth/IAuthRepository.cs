@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Shopping.DataAccess.Models;
 
-namespace Shopping.DataAccess.Repository
+namespace Online_ShoppingCart_API.Auth
 {
-    public interface IJWTManagerRepository
+    public interface IAuthRepository
     {
         string CreateJWTToken(IdentityUser user, List<string> roles);
     }

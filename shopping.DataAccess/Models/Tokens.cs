@@ -2,7 +2,7 @@ namespace Shopping.DataAccess.Models
 {
     public class Tokens
     {
-        public string JwtToken { get; set; }
-        public string RefreshToken { get; set; }
+        public string Token { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

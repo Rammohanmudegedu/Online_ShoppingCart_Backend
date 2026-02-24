@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\shopping.DataAccess\shopping.DataAccess.csproj" />
-    <ProjectReference Include="..\shopping.application\shopping.application.csproj" />
+    <ProjectReference Include="..\Shopping.DataAccess\Shopping.DataAccess.csproj" />
+    <ProjectReference Include="..\shopping.application\Shopping.Application.csproj" />
   </ItemGroup>
 
 </Project>

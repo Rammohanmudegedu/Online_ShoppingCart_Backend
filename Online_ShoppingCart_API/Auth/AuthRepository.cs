@@ -1,30 +1,26 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Online_ShoppingCart_API.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
+using Shopping.DataAccess.Models;
+using shopping.DataAccess.IRepositories;
 
-namespace Online_ShoppingCart_API.Repository
+namespace Online_ShoppingCart_API.Auth
 {
-    public class JWTManagerRepository : IJWTManagerRepository
+    public class AuthRepository : IAuthRepository
     {
         private readonly IConfiguration iconfiguration;
 
-        public JWTManagerRepository()
-        {
-        }
-
-        public JWTManagerRepository(IConfiguration iconfiguration)
+        public AuthRepository(IConfiguration iconfiguration)
         {
             this.iconfiguration = iconfiguration;
-            
         }
 
         public string CreateJWTToken(IdentityUser user, List<string> roles)
         {
             var claims = new List<Claim>();
-
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
 
             foreach (var role in roles)
@@ -36,13 +32,11 @@ namespace Online_ShoppingCart_API.Repository
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
             var token = new JwtSecurityToken(
-
                     iconfiguration["JWT:Issuer"],
                     iconfiguration["JWT:Audience"],
                     claims, expires: DateTime.Now.AddMinutes(60),
                     signingCredentials: credentials
                 );
-
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

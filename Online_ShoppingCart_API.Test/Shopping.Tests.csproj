@@ -22,11 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Online_ShoppingCart_API\Online_ShoppingCart_API.csproj" />
+    <ProjectReference Include="..\Online_ShoppingCart_API\Shopping.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

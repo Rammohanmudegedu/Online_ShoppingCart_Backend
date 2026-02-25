@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-
+using Shopping.Utilities.Common;
 namespace Online_ShoppingCart_API.Handlers
 {
     public class GlobalExceptionHandler : IExceptionHandler
@@ -18,7 +18,7 @@ namespace Online_ShoppingCart_API.Handlers
             _logger.LogError(exception, exception.Message);
 
             // Handle with your custom error handler
-            //ErrorHandler.Handle(exception, ApplicationSettings.ApplicationName);
+            ErrorHandler.Handle(exception, ResourceConstants.ApplicationName);
 
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
             httpContext.Response.ContentType = "application/json";

@@ -9,14 +9,16 @@ using Online_ShoppingCart_API.Service;
 using shopping.application.Iservices;
 using shopping.DataAccess.IRepositories;
 using shopping.DataAccess.Repositories;
+using Shopping.API.Properties;
 using Shopping.DataAccess.Models;
 using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+ApplicationProperties.Load(builder.Configuration);
 
+// Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -105,7 +107,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
 

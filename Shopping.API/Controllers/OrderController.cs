@@ -58,7 +58,7 @@ namespace Online_ShoppingCart_API.Controllers
         }
 
         [Authorize(Roles = "User,Admin")]
-        [HttpGet("{email}")]
+        [HttpGet("userorders/{email}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByEmail(string email)
         {
             try

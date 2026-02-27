@@ -13,6 +13,7 @@ namespace Shopping.Utilities.Common
     #region ResourceConstants
     public class ResourceConstants
     {
+        //this is not used  -- attaull it is from radar rockwell
         public static string DecryptionKey { get; set; } = "kxDlNHBcDDSWx0J_WrVXQrlNjw==";
         public static string? ApplicationEnvironment { get; set; }
         public static string? ApplicationName { get; set; }
